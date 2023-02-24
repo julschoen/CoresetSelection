@@ -1,40 +1,38 @@
+import argparse
 import torch
-from torchvision.datasets import CIFAR10
-from torch.utils.data import DataLoader, Dataset, SubsetRandomSampler
+from torchvision import datasets, transforms
+import os
 
-class CIFAR10Dataset(Dataset):
-    def __init__(self, cifar10_dataset, indices):
-        self.cifar10_dataset = cifar10_dataset
-        self.indices = indices
 
-    def __make_class_indices(self):
-        
+log_dir = '../data'
 
-    def __getitem__(self, idx):
-        image, label = self.cifar10_dataset[self.indices[idx]]
-        return image, label
+def save(file_name, data):
+        file_name = os.path.join(log_dir, file_name)
+        torch.save(data.cpu(), file_name)
 
-    def __len__(self):
-        return len(self.indices)
+def make_data():
+    train_kwargs = {'batch_size': 5000, 'shuffle':True}
 
-class CIFAR10DataLoader(DataLoader):
-    def __init__(self, cifar10_dataset, num_samples_per_class, batch_size=1, shuffle=False, num_workers=0, collate_fn=None, pin_memory=False, drop_last=False):
-        self.cifar10_dataset = cifar10_dataset
-        self.num_samples_per_class = num_samples_per_class
-        self.class_indices = self._get_class_indices()
-        self.indices = self._generate_indices()
-        super().__init__(CIFAR10Dataset(self.cifar10_dataset, self.indices), batch_size=batch_size, shuffle=shuffle, num_workers=num_workers, collate_fn=collate_fn, pin_memory=pin_memory, drop_last=drop_last)
+    transform=transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(0.5, 0.5)
+    ])
+    
+    dataset1 = datasets.CIFAR10('../data/', train=True, download=True,
+                       transform=transform)
+    train_loader = torch.utils.data.DataLoader(dataset1,**train_kwargs)
 
-    def _get_class_indices(self):
-        class_indices = {}
-        for idx, (_, label) in enumerate(self.cifar10_dataset):
-            if label not in class_indices:
-                class_indices[label] = []
-            class_indices[label].append(idx)
-        return class_indices
+    if not os.path.isdir(comp_dir):
+        os.mkdir(comp_dir)
 
-    def _generate_indices(self):
-        indices = []
-        for label in self.class_indices:
-            indices.extend(torch.randperm(len(self.class_indices[label]))[:self.num_samples_per_class])
-        return indices
+    for c in range(10):
+        data_all = []
+        for i, (x,y) in enumerate(train_loader):
+            data = x[y == c]
+            data_all.append(data)
+
+        data = torch.concat(data_all)
+        save(f'data_class_{i}.pt', data)
+
+if __name__ == '__main__':
+    make_random()
