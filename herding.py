@@ -11,7 +11,7 @@ def pretrain(model, args):
         model.load_state_dict(storch.load('res.pt'))
         return model
 
-    criterion = nn.CrossEntropyLoss().to(args.device)
+    criterion = torch.nn.CrossEntropyLoss().to(args.device)
     criterion.__init__()
     opt = torch.optim.Adam(model.parameters(), lr=args.lr)
 
