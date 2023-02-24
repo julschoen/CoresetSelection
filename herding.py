@@ -6,10 +6,10 @@ import torchvision
 import os
 import argparse
 
-def pretrain(model, args):
-    if False and os.path.isfile('res.pt'):
+def pretrain(model, args, run_num):
+    if os.path.isfile(f'res_{run_num}.pt'):
         print('### Loading Pretrained ResNet-18 ###')
-        model.load_state_dict(torch.load('res.pt'))
+        model.load_state_dict(torch.load(f'res_{run_num}.pt'))
         return model
 
     criterion = torch.nn.CrossEntropyLoss().to(args.device)
@@ -41,7 +41,7 @@ def pretrain(model, args):
         acc = (pred.eq(y.view_as(pred)).sum().item()/512.)*100.
 
         print(f'[{epoch}|{args.epochs}] Loss {loss.item()}, Acc {acc}')
-    torch.save(model.state_dict(), 'res.pt')   
+    torch.save(model.state_dict(), f'res_{run_num}.pt')   
     return model
 
 def log_interpolation(data, args):
@@ -75,7 +75,7 @@ def herding_resnet():
         resnet = models.resnet18(weights='DEFAULT')
         resnet.fc = torch.nn.Linear(512,10)
         resnet = resnet.to(args.device)
-        resnet = pretrain(resnet, args)
+        resnet = pretrain(resnet, args, j)
         resnet = torch.nn.Sequential(*(list(resnet.children())[:-1])).eval().cpu().float()
 
         with torch.no_grad():
@@ -100,7 +100,7 @@ def herding_resnet():
                     # Update the empirical mean based on the selected points
                     #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
                     mu = resnet(U).mean(dim=0)
-                    
+
         save(f'herding_x_{j}.pt', S, args.log_dir)
         save(f'herding_y_{j}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
     
