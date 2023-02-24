@@ -78,7 +78,7 @@ def herding_resnet():
     resnet = torch.nn.Sequential(*(list(resnet.children())[:-1])).eval().cpu()
 
     with torch.no_grad():
-        S = torch.zeros((args.num_classes*args.num_ims, 3, 32, 32), dtype=float)
+        S = torch.zeros((args.num_classes*args.num_ims, 3, 32, 32), dtype=torch.double)
         for c in range(args.num_classes):
             X = torch.load(os.path.join('../data/', f'data_class_{c}.pt'))
             # Extract features from the dataset using the ResNet model
