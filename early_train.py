@@ -35,4 +35,4 @@ def make_data():
         save(f'data_class_{i}.pt', data)
 
 if __name__ == '__main__':
-    make_random()
+    make_data()
