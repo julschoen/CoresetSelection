@@ -113,7 +113,7 @@ def herding_resnet():
                     #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
                     mu = resnet(U).mean(dim=0)
                 break
-        save(f'herding_x_{j}.pt', data, args.log_dir)
+        save(f'herding_x_{j}.pt', S, args.log_dir)
         save(f'herding_y_{j}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
     
 
