@@ -29,7 +29,7 @@ def make_data():
             data_all.append(data)
 
         data = torch.concat(data_all)
-        save(f'data_class_{i}.pt', data)
+        save(f'data_class_{c}.pt', data)
 
 if __name__ == '__main__':
     make_data()
