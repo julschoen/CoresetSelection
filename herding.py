@@ -30,11 +30,11 @@ def pretrain(model, args):
             x, y = x.to(args.device), y.to(args.device)
             opt.zero_grad()
             outputs = model(x)
-            loss = self.criterion(outputs, y)
+            loss = criterion(outputs, y)
             loss = loss.mean()
 
             loss.backward()
-            self.model_optimizer.step()
+            opt.step()
 
         acc = outputs.eq(y.view_as(outputs)).sum().item()
 
