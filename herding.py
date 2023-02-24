@@ -94,7 +94,7 @@ def herding_resnet():
             for i in range(args.num_ims):
                 # Extract features from the unselected points using the ResNet model
                 U_features = resnet(U)
-
+                print(U_features.shape)
                 # Compute the similarity between the unselected points and the empirical mean based on the features
                 sim = F.cosine_similarity(U_features, mu.view(1, -1), dim=1)
 
