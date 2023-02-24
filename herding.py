@@ -7,7 +7,7 @@ import os
 import argparse
 
 def pretrain(model, args):
-    if os.path.isfile('res.pt'):
+    if False and os.path.isfile('res.pt'):
         print('### Loading Pretrained ResNet-18 ###')
         model.load_state_dict(torch.load('res.pt'))
         return model
@@ -49,8 +49,10 @@ def log_interpolation(data, args):
         torchvision.utils.make_grid(data, nrow=args.num_ims, padding=2, normalize=True)
         , os.path.join(args.log_dir, f'ims.png'))
 
-
-
+def save(file_name, data, comp_dir):
+        file_name = os.path.join(comp_dir, file_name)
+        torch.save(data.cpu(), file_name)
+        
 def herding_resnet():
     parser = argparse.ArgumentParser(description='Herding Arguments')
     # General
@@ -58,7 +60,6 @@ def herding_resnet():
     parser.add_argument('--num_classes', type=int, default=10)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--log_dir', type=str, default='../comparison_synth')
-    parser.add_argument('--save_name', type=str, default='herding_1')
 
     # Pretrain
     parser.add_argument('--epochs', type=int, default=10)
@@ -78,38 +79,41 @@ def herding_resnet():
     # Remove the last layer of the ResNet model
     resnet = torch.nn.Sequential(*(list(resnet.children())[:-1])).eval().cpu().float()
 
-    with torch.no_grad():
-        S = torch.zeros((args.num_classes*args.num_ims, 3, 32, 32), dtype=torch.float)
-        for c in range(args.num_classes):
-            print(f'### Class {c} ###')
-            X = torch.load(os.path.join('../data/', f'data_class_{c}.pt'))
-            # Extract features from the dataset using the ResNet model
-            X_features = resnet(X)
+    for j in range(10):
+        print(f'### Run {j+1} ###')
+        with torch.no_grad():
+            S = torch.zeros((args.num_classes*args.num_ims, 3, 32, 32), dtype=torch.float)
+            for c in range(args.num_classes):
+                print(f'### Class {c} ###')
+                X = torch.load(os.path.join('../data/', f'data_class_{c}.pt'))
+                # Extract features from the dataset using the ResNet model
+                X_features = resnet(X)
 
-            # Compute the empirical mean of the dataset
-            mu = X_features.mean(dim=0)
+                # Compute the empirical mean of the dataset
+                mu = X_features.mean(dim=0)
 
-            # Initialize the set of selected points and the set of unselected points
-            U = X.clone()
+                # Initialize the set of selected points and the set of unselected points
+                U = X.clone()
 
-            # Iteratively select the coreset points
-            for i in range(args.num_ims):
-                # Extract features from the unselected points using the ResNet model
-                U_features = resnet(U).squeeze()
-                # Compute the similarity between the unselected points and the empirical mean based on the features
-                sim = F.cosine_similarity(U_features, mu.view(1, -1), dim=1)
+                # Iteratively select the coreset points
+                for i in range(args.num_ims):
+                    # Extract features from the unselected points using the ResNet model
+                    U_features = resnet(U).squeeze()
+                    # Compute the similarity between the unselected points and the empirical mean based on the features
+                    sim = F.cosine_similarity(U_features, mu.view(1, -1), dim=1)
 
-                # Find the index of the unselected point with the highest similarity
-                j = torch.argmax(sim)
+                    # Find the index of the unselected point with the highest similarity
+                    j = torch.argmax(sim)
 
-                # Add the selected point to the coreset and remove it from the set of unselected points
-                S[(args.num_ims*c)+i] = U[j]
-                U = torch.cat((U[:j], U[j+1:]))
+                    # Add the selected point to the coreset and remove it from the set of unselected points
+                    S[(args.num_ims*c)+i] = U[j]
+                    U = torch.cat((U[:j], U[j+1:]))
 
-                # Update the empirical mean based on the selected points
-                #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
-                mu = resnet(U).mean(dim=0)
-    log_interpolation(S, args)
+                    # Update the empirical mean based on the selected points
+                    #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
+                    mu = resnet(U).mean(dim=0)
+        save(f'herding_x_{j}.pt', data, args.log_dir)
+        save(f'herding_y_{j}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
     
 
 if __name__ == '__main__':
