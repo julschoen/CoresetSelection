@@ -8,6 +8,7 @@ import argparse
 
 def pretrain(model, args):
     if os.path.isfile('res.pt'):
+        print('### Loading Pretrained ResNet-18 ###')
         model.load_state_dict(torch.load('res.pt'))
         return model
 
