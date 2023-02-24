@@ -107,6 +107,7 @@ def herding_resnet():
                 U = torch.cat((U[:j], U[j+1:]))
 
                 # Update the empirical mean based on the selected points
+                #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
                 mu = resnet(U).mean(dim=0)
     log_interpolation(S, args)
     
