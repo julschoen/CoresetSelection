@@ -4,6 +4,7 @@ import torchvision.models as models
 from torchvision import datasets, transforms
 import torchvision
 import os
+import argparse
 
 def pretrain(model, args):
     if os.path.isfile('res.pt'):
