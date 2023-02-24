@@ -8,8 +8,8 @@ import argparse
 
 def pretrain(model, args):
     if os.path.isfile('res.pt'):
-        model.cpu().load_state_dict(torch.load('res.pt'))
-        return model.to(args.device)
+        model.load_state_dict(torch.load('res.pt'))
+        return model
 
     criterion = torch.nn.CrossEntropyLoss().to(args.device)
     criterion.__init__()
@@ -80,7 +80,7 @@ def herding_resnet():
     with torch.no_grad():
         S = torch.zeros((args.num_classes*args.num_ims, 3, 32, 32), dtype=float, device=args.device)
         for c in range(args.num_classes):
-            X = torch.load(os.path.join('../data/', f'data_class_{c}.pt'))
+            X = torch.load(os.path.join('../data/', f'data_class_{c}.pt')).to(args.device)
             # Extract features from the dataset using the ResNet model
             X_features = resnet(X)
 
