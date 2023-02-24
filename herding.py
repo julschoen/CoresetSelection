@@ -62,7 +62,7 @@ def herding_resnet():
     parser.add_argument('--log_dir', type=str, default='../comparison_synth')
 
     # Pretrain
-    parser.add_argument('--epochs', type=int, default=10)
+    parser.add_argument('--epochs', type=int, default=5)
     parser.add_argument('--lr', type=float, default=1e-3)
 
     args = parser.parse_args()
