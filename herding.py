@@ -60,7 +60,7 @@ def herding_resnet():
     parser.add_argument('--save_name', type=str, default='herding_1')
 
     # Pretrain
-    parser.add_argument('--epochs', type=int, default=100)
+    parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--lr', type=float, default=1e-3)
 
     args = parser.parse_args()
