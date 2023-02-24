@@ -36,7 +36,8 @@ def pretrain(model, args):
             loss.backward()
             opt.step()
 
-        acc = outputs.eq(y.view_as(outputs)).sum().item()
+        pred = outputs.argmax(dim=1, keepdim=True)
+        acc = pred.eq(y.view_as(pred)).sum().item()
 
         print(f'[{epoch}|{args.epochs}] Loss {loss.item()}, Acc {acc.item()}')
     torch.save(model.state_dict(), 'res.pt')   
