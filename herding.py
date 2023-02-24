@@ -68,7 +68,7 @@ def herding_resnet():
         os.mkdir(args.log_dir)
 
     # Load a pre-trained ResNet model
-    resnet = models.resnet18(pretrained=True).to(args.device)
+    resnet = models.resnet18(pretrained=True, weights=ResNet18_Weights.DEFAULT).to(args.device)
     resnet = pretrain(resnet, args)
     # Remove the last layer of the ResNet model
     resnet = torch.nn.Sequential(*(list(resnet.children())[:-1])).eval()
