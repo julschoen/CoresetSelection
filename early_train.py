@@ -22,9 +22,6 @@ def make_data():
                        transform=transform)
     train_loader = torch.utils.data.DataLoader(dataset1,**train_kwargs)
 
-    if not os.path.isdir(comp_dir):
-        os.mkdir(comp_dir)
-
     for c in range(10):
         data_all = []
         for i, (x,y) in enumerate(train_loader):
