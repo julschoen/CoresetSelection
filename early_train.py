@@ -23,6 +23,7 @@ def make_data():
     train_loader = torch.utils.data.DataLoader(dataset1,**train_kwargs)
 
     for c in range(10):
+        print(f'#### Class {c} ####')
         data_all = []
         for i, (x,y) in enumerate(train_loader):
             data = x[y == c]
