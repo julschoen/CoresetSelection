@@ -71,7 +71,7 @@ def herding_resnet():
         os.mkdir(args.log_dir)
 
     # Load a pre-trained ResNet model
-    resnet = models.resnet18(weights='ResNet18_Weights.DEFAULT')
+    resnet = models.resnet18(weights='DEFAULT')
     resnet.fc = torch.nn.Linear(512,10)
     resnet = resnet.to(args.device)
     #resnet = torch.nn.Sequential(*(list(resnet.children())[:-1], torch.nn.Linear(1000,10)))
