@@ -8,7 +8,7 @@ import argparse
 
 def pretrain(model, args):
     if os.path.isfile('res.pt'):
-        model.load_state_dict(storch.load('res.pt'))
+        model.load_state_dict(torch.load('res.pt'))
         return model
 
     criterion = torch.nn.CrossEntropyLoss().to(args.device)
