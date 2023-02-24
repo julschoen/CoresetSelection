@@ -7,7 +7,7 @@ import os
 import argparse
 
 def pretrain(model, args):
-    if os.path.isfile('res.pt'):
+    if False and os.path.isfile('res.pt'):
         print('### Loading Pretrained ResNet-18 ###')
         model.load_state_dict(torch.load('res.pt'))
         return model
@@ -63,7 +63,7 @@ def herding_resnet():
 
     # Pretrain
     parser.add_argument('--epochs', type=int, default=10)
-    parser.add_argument('--lr', type=float, default=1e-3)
+    parser.add_argument('--lr', type=float, default=1e-2)
 
     args = parser.parse_args()
 
@@ -112,7 +112,6 @@ def herding_resnet():
                     # Update the empirical mean based on the selected points
                     #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
                     mu = resnet(U).mean(dim=0)
-                break
         save(f'herding_x_{j}.pt', S, args.log_dir)
         save(f'herding_y_{j}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
     
