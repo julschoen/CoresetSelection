@@ -39,7 +39,7 @@ def pretrain(model, args):
         pred = outputs.argmax(dim=1, keepdim=True)
         acc = pred.eq(y.view_as(pred)).sum().item()
 
-        print(f'[{epoch}|{args.epochs}] Loss {loss.item()}, Acc {acc.item()}')
+        print(f'[{epoch}|{args.epochs}] Loss {loss.item()}, Acc {acc}')
     torch.save(model.state_dict(), 'res.pt')   
     return model
 
