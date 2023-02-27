@@ -85,7 +85,6 @@ def herding_resnet():
                 X = torch.load(os.path.join('../data/', f'data_class_{c}.pt'))
                 mu = resnet(X).mean(dim=0)
 
-                # Initialize the set of unselected points
                 U = X.clone()
 
                 for i in range(args.num_ims):
@@ -93,12 +92,9 @@ def herding_resnet():
                     sim = F.cosine_similarity(U_features, mu.view(1, -1), dim=1)
                     j = torch.argmax(sim)
 
-                    # Add the selected point to the coreset and remove it from the set of unselected points
                     S[(args.num_ims*c)+i] = U[j]
                     U = torch.cat((U[:j], U[j+1:]))
 
-                    # Update the empirical mean based on the selected points
-                    #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
                     mu = resnet(U).mean(dim=0)
 
         save(f'herding_x_{k}.pt', S, args.log_dir, args.num_ims)
