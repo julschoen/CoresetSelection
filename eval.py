@@ -154,8 +154,8 @@ def main():
         comp_dir = '../comparison_synth'
         
         ## random
-        targets = torch.load(os.path.join(comp_dir,f'herding_y_{i}.pt'))
-        features = torch.load(os.path.join(comp_dir, f'herding_x_{i}.pt'))
+        targets = torch.load(os.path.join(comp_dir,f'herding2_y_{i}.pt'))
+        features = torch.load(os.path.join(comp_dir, f'herding2_x_{i}.pt'))
 
         #features, targets = resize_comp(features, targets, args.num_ims, 10)
 
