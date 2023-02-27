@@ -155,7 +155,7 @@ def main():
         
         ## random
         targets = torch.load(os.path.join(comp_dir, str(args.num_ims),f'herding_y_{i}.pt'))
-        features = torch.load(os.path.join(comp_dir, str(args.num_ims), f'herding1_x_{i}.pt'))
+        features = torch.load(os.path.join(comp_dir, str(args.num_ims), f'herding_x_{i}.pt'))
 
         #features, targets = resize_comp(features, targets, args.num_ims, 10)
 
