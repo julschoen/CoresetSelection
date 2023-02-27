@@ -98,11 +98,11 @@ def herding_resnet():
                     U = torch.cat((U[:j], U[j+1:]))
 
                     # Update the empirical mean based on the selected points
-                    mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
-                    #mu = resnet(U).mean(dim=0)
+                    #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
+                    mu = resnet(U).mean(dim=0)
 
-        save(f'herding2_x_{k}.pt', S, args.log_dir)
-        save(f'herding2_y_{k}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
+        save(f'herding_x_{k}.pt', S, args.log_dir)
+        save(f'herding_y_{k}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
     
 
 if __name__ == '__main__':
