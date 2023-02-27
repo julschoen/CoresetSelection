@@ -49,8 +49,8 @@ def log_interpolation(data, args):
         torchvision.utils.make_grid(data, nrow=args.num_ims, padding=2, normalize=True)
         , os.path.join(args.log_dir, f'ims.png'))
 
-def save(file_name, data, comp_dir):
-        file_name = os.path.join(comp_dir, file_name)
+def save(file_name, data, comp_dir, num_ims):
+        file_name = os.path.join(comp_dir, str(num_ims), file_name)
         torch.save(data.cpu(), file_name)
         
 def herding_resnet():
@@ -101,8 +101,8 @@ def herding_resnet():
                     #mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
                     mu = resnet(U).mean(dim=0)
 
-        save(f'herding_x_{k}.pt', S, args.log_dir)
-        save(f'herding_y_{k}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
+        save(f'herding_x_{k}.pt', S, args.log_dir, args.num_ims)
+        save(f'herding_y_{k}.pt', torch.arange(args.num_classes).repeat(args.num_ims,1).T.flatten(), args.log_dir, args.num_ims)
     
 
 if __name__ == '__main__':
