@@ -70,12 +70,12 @@ def herding_resnet():
     if not os.path.isdir(args.log_dir):
         os.mkdir(args.log_dir)
 
-    for j in range(10):
-        print(f'### Run {j+1} ###')
+    for k in range(10):
+        print(f'### Run {k+1} ###')
         resnet = models.resnet18(weights='DEFAULT')
         resnet.fc = torch.nn.Linear(512,10)
         resnet = resnet.to(args.device)
-        resnet = pretrain(resnet, args, j)
+        resnet = pretrain(resnet, args, k)
         resnet = torch.nn.Sequential(*(list(resnet.children())[:-1])).eval().cpu().float()
 
         with torch.no_grad():
@@ -101,8 +101,8 @@ def herding_resnet():
                     mu = resnet(S[:(args.num_ims*c)+i+1].mean(dim=0).unsqueeze(0)).squeeze(0)
                     #mu = resnet(U).mean(dim=0)
 
-        save(f'herding2_x_{j}.pt', S, args.log_dir)
-        save(f'herding2_y_{j}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
+        save(f'herding2_x_{k}.pt', S, args.log_dir)
+        save(f'herding2_y_{k}.pt', torch.arange(10).repeat(args.num_ims,1).T.flatten(), args.log_dir)
     
 
 if __name__ == '__main__':
