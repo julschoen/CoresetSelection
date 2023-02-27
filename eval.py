@@ -134,6 +134,7 @@ def main():
     parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--num_ims', type=int, default=10)
+    parser.add_argument('--method', type=str, default='herding')
     args = parser.parse_args()
 
     device = args.device
@@ -154,8 +155,8 @@ def main():
         comp_dir = '../comparison_synth'
         
         ## random
-        targets = torch.load(os.path.join(comp_dir, str(args.num_ims),f'herding_y_{i}.pt'))
-        features = torch.load(os.path.join(comp_dir, str(args.num_ims), f'herding_x_{i}.pt'))
+        targets = torch.load(os.path.join(comp_dir, str(args.num_ims),args.method+f'_y_{i}.pt'))
+        features = torch.load(os.path.join(comp_dir, str(args.num_ims), args.method+f'_x_{i}.pt'))
 
         #features, targets = resize_comp(features, targets, args.num_ims, 10)
 
