@@ -203,7 +203,7 @@ class Trainer():
             self.opt_ims.step()
         
             if (t%100) == 0:
-                s = '[{}|{}] Loss: {:.4f}, MMD: {:.4f}'.format(t, self.p.niter_ims, loss.item(), mmd.item())
+                s = '[{}|{}] Loss: {:.4f}, MMD: {:.4f}'.format(t, self.p.niter, loss.item(), mmd.item())
                 if self.p.corr:
                     s += ', Corr: {:.4f}'.format(corr.item())
                 print(s,flush=True)
