@@ -93,7 +93,6 @@ class Trainer():
         self.gen = self.inf_train_gen()
 
         self.ims = torch.randn(10*self.p.num_ims,3,32,32).to(self.p.device)
-        self.up = Upsampler()
         self.ims = torch.nn.Parameter(self.ims)
         self.labels = torch.arange(10, device=self.p.device).repeat(self.p.num_ims,1).T.flatten()
         self.opt_ims = torch.optim.Adam([self.ims], lr=self.p.lr)
