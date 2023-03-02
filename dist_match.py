@@ -211,7 +211,6 @@ class Trainer():
         self.ims.requires_grad = False
         self.train_ims_cw()
 
-
 def main():
     # Training settings
     parser = argparse.ArgumentParser(description='Simple Dist Match')
@@ -220,7 +219,7 @@ def main():
     parser.add_argument('--niter', type=int, default=20000)
     parser.add_argument('--lr', type=float, default=1e-3)
     parser.add_argument('--num_ims', type=int, default=10)
-    parser.add_argument('--num_models', type=int, default=100)
+    parser.add_argument('--num_models', type=int, default=20)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--log_dir', type=str, default='./log')
     parser.add_argument('--corr', type=bool, default=False)
