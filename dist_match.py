@@ -179,7 +179,7 @@ class Trainer():
             loss = torch.tensor(0.0).to(self.p.device)
             data, labels = next(self.gen)
             for c in range(10):
-                d_c = data[labels == c]
+                d_c = data[labels == c].to(device)
                 ims = self.ims[c*self.p.num_ims:(c+1)*self.p.num_ims]
                 model = self.sample_model()
 
