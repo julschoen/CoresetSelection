@@ -175,7 +175,7 @@ class Trainer():
         print('############## Training Images ##############',flush=True)
         self.ims.requires_grad = True
 
-        for t in range(self.p.niter_ims):
+        for t in range(self.p.niter):
             loss = torch.tensor(0.0).to(self.p.device)
             data, labels = next(self.gen)
             for c in range(10):
