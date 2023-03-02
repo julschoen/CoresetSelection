@@ -11,7 +11,7 @@ import random
 import argparse
 
 class ConvNet(nn.Module):
-    def __init__(self, params, num_classes=10, net_width=128, net_depth=3, net_act='relu', net_norm='instancenorm', net_pooling='avgpooling'):
+    def __init__(self, num_classes=10, net_width=128, net_depth=3, net_act='relu', net_norm='instancenorm', net_pooling='avgpooling'):
         super(ConvNet, self).__init__()
 
         channel = 3
