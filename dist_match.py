@@ -189,7 +189,7 @@ class Trainer():
                 ims = self.ims[c*self.p.num_ims:(c+1)*self.p.num_ims]
                 model = self.sample_model()
 
-                encX = model(d_c)
+                encX = model(d_c).detach()
                 encY = model(ims)
 
                 mmd = torch.norm(encX.mean(dim=0)-encY.mean(dim=0))
