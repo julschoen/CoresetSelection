@@ -134,7 +134,7 @@ def main():
     parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--num_ims', type=int, default=10)
-    parser.add_argument('--method', type=str, default='DM/Base')
+    parser.add_argument('--method', type=str, default='../CDCGAN/GAN/Base')
     args = parser.parse_args()
 
     device = args.device
@@ -153,7 +153,7 @@ def main():
     test_loader = torch.utils.data.DataLoader(dataset2, **test_kwargs)
 
     res = []
-    for i in range(10):
+    for i in range(2):
         d = args.method + str(i)        
         ## random
         targets = torch.load(os.path.join(d, 'checkpoints', 'labels.pt'))
