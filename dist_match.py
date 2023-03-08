@@ -96,7 +96,7 @@ class Trainer():
 
         self.ims = torch.nn.Parameter(self.ims)
         self.labels = torch.arange(10, device=self.p.device).repeat(self.p.num_ims,1).T.flatten()
-        self.opt_ims = torch.optim.SGD([self.ims, ], lr=self.p.lr, momentum=0.5)#torch.optim.Adam([self.ims], lr=self.p.lr)
+        self.opt_ims = torch.optim.Adam([self.ims], lr=self.p.lr)
 
         self.models = []
         for _ in range(self.p.num_models):
